@@ -64,6 +64,8 @@ struct frame_data_info {
 	int width;
 	int height;
 	int plane_mode;
+	int src_type;                                      
+	int src_field; 
 
 	struct frame_data dst_bufs[DST_BUFFER_COUNT];
 	struct frame_data src_bufs[SRC_BUFFER_COUNT];
@@ -71,66 +73,15 @@ struct frame_data_info {
 
 ////////////////////////////////////////////////
 
-typedef struct {
-	int width;
-	int height;
-	int src_stride_factor;
-	int dst_stride_factor;
-	int format_type;
-} CONTEXT;
+enum nx_deinter_src_type {                                                      
+	SRC_TYPE_MIPI = 0ul,                                                    
+	SRC_TYPE_PARALLEL                                                       
+};                                                                              
 
-typedef struct __EXE_CONTEXT{
-	int dq_sync_timeline_fd;
-	int q_sync_timeline_fd;
-} EXE_CONTEXT;
-
-
-typedef struct {
-	int fence_fd;
-	int fence_idx;
-	unsigned long src_phys[3];
-	unsigned char* src_virt[3];
-
-	struct sync_pt *pt;
-	struct sync_fence *fence;
-} Q_BUF;
-
-typedef struct {
-	int fence_fd;
-	int fence_idx;
-	unsigned long dst_phys[3];
-	unsigned char* dst_virt[3];
-
-	struct sync_pt *pt;
-	struct sync_fence *fence;
-} DQ_BUF;
-
-typedef struct {
-	  DQ_BUF dst_buf[DST_BUFFER_POOL_COUNT];
-} DST_BUF;
-
-typedef struct {
-	DST_BUF *dst_buf;
-	int buf_cnt;
-} DQ_SET;
-
-struct deinter_context {
-	unsigned int width;
-	unsigned int height;
-	unsigned int src_type;
-	unsigned int src_field;
-	unsigned int deinter_mode;
+enum nx_deinter_src_field {
+	FIELD_EVEN = 0,
+	FIELD_ODD
 };
-
-//////////////////////////////////////////////////////////////
-
-typedef enum
-{
-	ACT_COPY = 0,
-	ACT_DIRECT,
-	ACT_DIRECT_FD,
-	ACT_THREAD,
-} ACT_MODE;
 
 enum
 {
@@ -138,20 +89,15 @@ enum
 	FRAME_DST
 };
 
-enum nx_deinter_src_field {
-	FIELD_EVEN = 0,
-	FIELD_ODD
+enum
+{
+	PLANE2 = 1,
+	PLANE3,
 };
 
 enum nx_deinter_mode {
 	SINGLE_FRAME = 0ul,
 	DOUBLE_FRAME	
-};
-
-enum
-{
-	PLANE2 = 2,
-	PLANE3,
 };
 
 int nx_deinter_open(void);
