@@ -97,7 +97,7 @@ enum
 
 enum nx_deinter_mode {
 	SINGLE_FRAME = 0ul,
-	DOUBLE_FRAME	
+	DOUBLE_FRAME
 };
 
 int nx_deinter_open(void);
