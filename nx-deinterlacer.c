@@ -26,8 +26,11 @@
 
 #include <sys/ioctl.h>
 #include <sys/types.h>
+#if 0
 #include <utils/Log.h>
-
+#else
+#include <log/log.h>
+#endif
 #include "deinterlacer.h"
 #include "nx-deinterlacer.h"
 
